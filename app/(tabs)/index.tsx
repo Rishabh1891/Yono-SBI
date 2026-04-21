@@ -272,7 +272,7 @@ export default function App() {
                   <Ionicons name="eye-outline" size={18} color="#555" style={styles.ml10} />
                 </View>
                 <Text style={styles.accountType}>Savings Account</Text>
-                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹15,35,087.43</Text></Text>
+                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹19,35,087.43</Text></Text>
               </View>
               <Ionicons name="chevron-down" size={24} color="#555" />
             </View>
@@ -301,6 +301,7 @@ export default function App() {
             <Text style={styles.dateText}>April 2026</Text>
           </View>
 
+          <TransactionItem title="IMPS- JITENDER DPST 903467..." date="21/04/2026" amount="4,00,000.00" balance="19,35,087.43" isCredit />
           <TransactionItem title="EPF- SALARY WTDR 470823..." date="20/04/2026" amount="11,04,704.45" balance="15,35,087.43" isCredit />
           <TransactionItem title="CHQ- TRANSFER TO 536344..." date="10/03/2026" amount="2,15,000.00" balance="4,04,768.23" />
           <TransactionItem title="UPI- TRANSFER TO 536233..." date="03/03/2026" amount="15,000.00" balance="4,19,568.23" />
