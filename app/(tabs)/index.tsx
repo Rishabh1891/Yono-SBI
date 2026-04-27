@@ -2,6 +2,7 @@ import { Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   KeyboardAvoidingView,
@@ -27,6 +28,15 @@ export default function App() {
   const [mpin, setMpin] = useState<string>('');
   const [includeSummary, setIncludeSummary] = useState(false);
   const [includeNominee, setIncludeNominee] = useState(false);
+  const [showBalance, setShowBalance] = useState(false); // State to toggle balance visibility
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 2000);
+  };
   
   // Dropdown states
   const [duration, setDuration] = useState('Duration');
@@ -262,7 +272,7 @@ export default function App() {
                   <Ionicons name="eye-outline" size={18} color="#555" style={styles.ml10} />
                 </View>
                 <Text style={styles.accountType}>Savings Account</Text>
-                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹16,79,768.23</Text></Text>
+                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹25,85,087.43</Text></Text>
               </View>
               <Ionicons name="chevron-down" size={24} color="#555" />
             </View>
@@ -288,13 +298,15 @@ export default function App() {
           </View>
 
           <View style={styles.dateSeparator}>
-            <Text style={styles.dateText}>March 2026</Text>
+            <Text style={styles.dateText}>April 2026</Text>
           </View>
 
-          <TransactionItem title="UPI- TRANSFER TO 536415..." date="16/03/2026" amount="40,000.00" balance="16,79,768.23" />
-          <TransactionItem title="CHQ- TRANSFER TO 536344..." date="10/03/2026" amount="2,15,000.00" balance="17,19,768.23" />
-          <TransactionItem title="UPI- TRANSFER TO 536233..." date="03/03/2026" amount="15,000.00" balance="19,34,768.23" />
-          <TransactionItem title="UPI- TRANSFER TO 696395..." date="02/03/2026" amount="200.00" balance="19,49,768.23" />
+      <TransactionItem title="IMPS- RISHABH DPST 349032..." date="27/04/2026" amount="7,50,000.00" balance="25,85,087.43" isCredit />
+          <TransactionItem title="RTGS- JITENDRA DPST 873056..." date="21/04/2026" amount="4,00,000.00" balance="18,85,087.43" isCredit />
+          <TransactionItem title="EPF- SALARY WTDR 470823..." date="20/04/2026" amount="11,04,704.45" balance="11,85,087.43" isCredit />
+          <TransactionItem title="CHQ- TRANSFER TO 536344..." date="10/03/2026" amount="2,15,000.00" balance="10,85,387.43" />
+          <TransactionItem title="UPI- TRANSFER TO 536233..." date="03/03/2026" amount="15,000.00" balance="10,99,187.43" />
+          <TransactionItem title="UPI- TRANSFER TO 696395..." date="02/03/2026" amount="200.00" balance="10,85,387.43" />
         </ScrollView>
       </SafeAreaView>
     );
@@ -302,6 +314,15 @@ export default function App() {
 
   // --- SCREEN 3: DASHBOARD ---
   if (currentScreen === 'dashboard') {
+    if (isRefreshing) {
+      return (
+        <SafeAreaView style={[styles.dashboardContainer, styles.centerContent]}>
+          <StatusBar barStyle="dark-content" />
+          <ActivityIndicator size="large" color="#4A148C" />
+        </SafeAreaView>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.dashboardContainer}>
         <StatusBar barStyle="dark-content" />
@@ -330,13 +351,17 @@ export default function App() {
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cardScroll}>
             <LinearGradient colors={['#C2185B', '#880E4F']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.bankCard}>
                <View style={styles.rowBetween}>
-                  <Text style={styles.cardTitle}>TRANSACTION ACCOUNTS (XX)</Text>
-                  <Ionicons name="eye-outline" size={20} color="#FFF" />
+                  <Text style={styles.cardTitle}>TRANSACTION ACCOUNT (49)</Text>
+                  <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
+                    <Ionicons name={showBalance ? "eye-outline" : "eye-off-outline"} size={20} color="#FFF" />
+                  </TouchableOpacity>
                </View>
-               <Text style={styles.cardSub}>Combined Balance</Text>
+               <Text style={styles.cardSub}>Total Balance</Text>
                <View style={styles.rowBetween}>
-                 <Text style={styles.balanceText}>₹16,79,768.23</Text>
-                 <MaterialCommunityIcons name="refresh" size={24} color="#FFF" />
+                 <Text style={styles.balanceText}>{showBalance ? '₹25,85,087.43' : 'XXXX,XXXX.XX'}</Text>
+                 <TouchableOpacity onPress={handleRefresh}>
+                   <MaterialCommunityIcons name="refresh" size={24} color="#FFF" />
+                 </TouchableOpacity>
                </View>
                <View style={[styles.row, styles.mt20]}>
                   <Text style={styles.cardLink}>View Accounts</Text>
@@ -446,10 +471,10 @@ const GridItem = ({ label }: { label: string }) => (<View style={styles.gridItem
 const DashGridItem = ({ icon, label }: { icon: any, label: string }) => (
   <View style={styles.dashGridItem}><View style={styles.dashIconCircle}><Ionicons name={icon} size={24} color="#6A1B9A" /></View><Text style={styles.dashGridLabel}>{label}</Text></View>
 );
-const TransactionItem = ({ title, date, amount, balance }: any) => (
+const TransactionItem = ({ title, date, amount, balance, isCredit }: any) => (
   <View style={styles.transItem}><View style={styles.upiTag}></View>
     <View style={styles.rowBetween}><View style={styles.flex1}><Text style={styles.transTitle} numberOfLines={1}>{title}</Text><Text style={styles.transDate}>{date}</Text></View>
-      <View style={styles.alignEnd}><View style={styles.row}><Text style={styles.transAmount}>₹{amount}</Text><Feather name="arrow-up-right" size={16} color="#D32F2F" style={styles.ml5} /></View><Text style={styles.transBalance}>Balance: ₹{balance}</Text></View>
+      <View style={styles.alignEnd}><View style={styles.row}><Text style={styles.transAmount}>₹{amount}</Text><Feather name={isCredit ? "arrow-down-left" : "arrow-up-right"} size={16} color={isCredit ? "#2E7D32" : "#D32F2F"} style={styles.ml5} /></View><Text style={styles.transBalance}>Balance: ₹{balance}</Text></View>
     </View>
   </View>
 );
