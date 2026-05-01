@@ -272,7 +272,7 @@ export default function App() {
                   <Ionicons name="eye-outline" size={18} color="#555" style={styles.ml10} />
                 </View>
                 <Text style={styles.accountType}>Savings Account</Text>
-                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹19,35,087.43</Text></Text>
+                <Text style={styles.availableBalanceLabel}>Available Balance: <Text style={styles.bold}>₹68,636.44</Text></Text>
               </View>
               <Ionicons name="chevron-down" size={24} color="#555" />
             </View>
@@ -298,9 +298,10 @@ export default function App() {
           </View>
 
           <View style={styles.dateSeparator}>
-            <Text style={styles.dateText}>April 2026</Text>
+            <Text style={styles.dateText}>May 2026</Text>
           </View>
 
+          <TransactionItem title="CHQ- AIR INDIA DPST 472748..." date="05/04/2026" amount="25,00,000.00" balance="68,636.44" />
           <TransactionItem title="IMPS- JITENDER DPST 903467..." date="21/04/2026" amount="4,00,000.00" balance="19,35,087.43" isCredit />
           <TransactionItem title="EPF- SALARY WTDR 470823..." date="20/04/2026" amount="11,04,704.45" balance="15,35,087.43" isCredit />
           <TransactionItem title="CHQ- TRANSFER TO 536344..." date="10/03/2026" amount="2,15,000.00" balance="4,04,768.23" />
@@ -357,7 +358,7 @@ export default function App() {
                </View>
                <Text style={styles.cardSub}>Total Balance</Text>
                <View style={styles.rowBetween}>
-                 <Text style={styles.balanceText}>{showBalance ? '₹15,35,087.43' : 'XXXX,XXXX.XX'}</Text>
+                 <Text style={styles.balanceText}>{showBalance ? '₹68,636.44' : 'XXXX,XXXX.XX'}</Text>
                  <TouchableOpacity onPress={handleRefresh}>
                    <MaterialCommunityIcons name="refresh" size={24} color="#FFF" />
                  </TouchableOpacity>
